@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from '../services/axios'; 
+import axios from '../services/axios';
 
 export default {
   data() {
@@ -41,7 +41,6 @@ export default {
     },
     handleTileClick(tile) {
       if (!tile.matched) {
-       
         if (this.isAdjacentToEmpty(tile)) {
           this.swapTiles(tile);
           this.score++;
@@ -58,7 +57,6 @@ export default {
     },
     generateTiles() {
       const tiles = [];
-
       const values = Array.from({ length: 15 }, (_, index) => index + 1);
 
       for (let i = values.length - 1; i > 0; i--) {
@@ -115,12 +113,12 @@ export default {
       return true;
     },
     fetchUsers() {
-      axios.get('/users') 
-        .then(response => {
-          this.users = response.data; 
+      axios.get('/users')
+        .then((response) => {
+          this.users = response.data;
         })
-        .catch(error => {
-          this.error = ''; 
+        .catch((error) => {
+          this.error = '';
           console.error(error);
         });
     },
@@ -129,12 +127,12 @@ export default {
       const minutes = Math.floor(this.timer / 60);
       const time = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-      axios.post('/results', { time, moves: this.score }) 
-        .then(response => {
+      axios.post('/api/results', { time, moves: this.score })
+        .then((response) => {
           console.log('You win!!!');
           console.log('Time:', time);
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
     }
@@ -143,75 +141,4 @@ export default {
 </script>
 
 <style scoped>
-.background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #19242f;
-  z-index: -1; 
-}
-
-.game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  color: #fff;
-}
-
-.title {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.score {
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.board {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 10px;
-  width: 400px;
-  margin-bottom: 20px;
-}
-
-.tile {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  background-color: #555;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
-  height: 80px;
-}
-
-.tile.matched {
-  background-color: #333;
-  cursor: default;
-}
-
-.reset-button {
-  padding: 10px 20px;
-  background-color: #3a3a3a;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.reset-button:hover {
-  background-color: #1b1b1b;
-}
-
-.game-over-message {
-  font-size: 18px;
-}
 </style>
